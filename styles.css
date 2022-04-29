@@ -17,6 +17,13 @@ main {
     grid-row-end: 2;  
 }
 
+#timecode {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 0.5em;
+    vertical-align: middle;
+}
+
 /* 上部タイムコード設定ブロック */
 #timecode_settings_block {
     background-color: #cef;
@@ -99,6 +106,10 @@ main {
     text-decoration: none;
 }
 .button:hover {
-    background-color: #aaa;
+    background-color: #ddd;
+}
+.button:disabled {
+    color:#666;
+    background-color: #999;
 }
 
