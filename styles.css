@@ -3,9 +3,10 @@
 }
 
 main {
+    height: calc(100vh - 1em);
     display: grid;
     grid-template-columns: 5fr 5fr;
-    grid-template-rows: 1fr 1fr 8fr 1fr;
+    grid-template-rows: 2.5em 5em auto 3em 1em;
 }
 
 /* 上部タイムコードブロック */
@@ -47,7 +48,12 @@ main {
     align-items: center;
   
 }
-
+#newMemo {
+    background-color: #fff;
+    width: 80%;
+    margin: 1em;
+    border: 1px solid #444
+}
 #mark {
     width: 50%;
 }
@@ -95,6 +101,24 @@ main {
 
 #save {
     margin: 0.5em
+}
+
+/* スニペット（F1〜F5）ショートカットブロック */
+#snippets_block {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 5;
+    grid-row-end: 6;
+
+    /* 子要素に対する指定 */
+    display: grid;
+    justify-items: auto;
+    flex-direction: row;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.snippet {
+
 }
 
 /* 汎用クラス */

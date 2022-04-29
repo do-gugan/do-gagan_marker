@@ -1,5 +1,42 @@
 ﻿//各種デフォルト値
 const defaultMemo = "チャプター";
+// $tの位置に記入済みのテキストが挿入される
+const snippet1 = "タスク開始:$t$c";
+const snippet2 = "参加者「$t$c」";
+const snippet3 = "進行役「$t$c」";
+const snippet4 = "見所！$t$c";
+const snippet5 = "タスク完了:$t$c";
+
+document.getElementById('snippet1').innerText = snippet1.replace("$t","");
+document.getElementById('snippet2').innerText = snippet2.replace("$t","");
+document.getElementById('snippet3').innerText = snippet3.replace("$t","");
+document.getElementById('snippet4').innerText = snippet4.replace("$t","");
+document.getElementById('snippet5').innerText = snippet5.replace("$t","");
+
+//キーボードショートカット
+document.body.addEventListener('keydown', (event)=>{
+    if (event.code == "F1") {
+        if (document.getElementById('snippet1').disabled == false){
+            console.log("F1");
+        }
+    } else if (event.code == "F2") {
+        if (document.getElementById('snippet2').disabled == false){
+            console.log("F2");
+        }
+    } else if (event.code == "F3") {
+        if (document.getElementById('snippet3').disabled == false){
+            console.log("F3");
+        }
+    } else if (event.code == "F4") {
+        if (document.getElementById('snippet4').disabled == false){
+            console.log("F5");
+        }
+    } else if (event.code == "F6") {
+        if (document.getElementById('snippet5').disabled == false){
+            console.log("F6");
+        }
+    }
+});
 
 //手動カウンタースタートボタン
 let manualCountTimer; //手動カウンター用タイマー
@@ -30,6 +67,12 @@ function updateManualCounter() {
 
 function toggleControls(b) {
     document.getElementById('mark').disabled = b;
+    document.getElementById('snippet1').disabled = b;
+    document.getElementById('snippet2').disabled = b;
+    document.getElementById('snippet3').disabled = b;
+    document.getElementById('snippet4').disabled = b;
+    document.getElementById('snippet5').disabled = b;
+
     document.getElementById('show_timecode_settings').disabled = !b;
 }
 
