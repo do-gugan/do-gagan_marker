@@ -2,15 +2,27 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title></title>
-    <script type="text/javascript" src="scripts.js"></script>
+    <title>動画眼マーカー</title>
     <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <main>
-
-
+<div id="timecode_block">
+    <div id="timecode">00:00:00</div>
+    <div id="show_timecode_settings">設定</div>    
+</div>
+<div id="timecode_settings_block"></div>
+<div id="input_controls_block">
+    <button id="mark" class="button">記録</button>
+</div>
+<div id="list_block">
+    <div id="list"></div>
+</div>
+<div id="save_button_block">
+    <a href="#" id="save"  download="rename_same_as_movie.dggn.txt" class="button">ファイル保存</a>
+</div>
 </main>
 </body>
+<script type="text/javascript" src="scripts.js"></script>
 </html>

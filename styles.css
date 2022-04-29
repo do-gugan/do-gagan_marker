@@ -1,4 +1,104 @@
 ﻿body {
+    background-color: #999;
+}
 
+main {
+    display: grid;
+    grid-template-columns: 5fr 5fr;
+    grid-template-rows: 1fr 1fr 8fr 1fr;
+}
+
+/* 上部タイムコードブロック */
+#timecode_block {
+    background-color: #cde;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 2;  
+}
+
+/* 上部タイムコード設定ブロック */
+#timecode_settings_block {
+    background-color: #cef;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 3;
+}
+
+/* 左マーカー内容操作ブロック */
+#input_controls_block {
+    background-color: #fac;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 3;
+    grid-row-end: 4;
+
+    /* 子要素に対する指定 */
+    display: grid;
+    justify-items: center;
+    align-items: center;
+  
+}
+
+#mark {
+    width: 50%;
+}
+
+/* 右リストブロック */
+
+#list_block {
+    background-color: #cfa;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 3;
+    grid-row-end: 4;
+
+    padding: 1.5em;
+}
+
+#list {
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #444;
+    padding: 0.4em;
+}
+
+.tc {
+    margin-right: 1em;
+}
+
+.memo {
+
+}
+
+/* 下部保存ボタンブロック */
+#save_button_block {
+    background-color: #a9f;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 4;
+    grid-row-end: 5;
+
+    /* 子要素に対する指定 */
+    display: grid;
+    justify-items: right;
+}
+
+#save {
+    margin: 0.5em
+}
+
+/* 汎用クラス */
+.button {
+    color:black;
+    border: 1px solid #444;
+    padding: 0.3em 0.5em 0.3em 0.5em;
+    background-color: #ccc;
+    text-decoration: none;
+}
+.button:hover {
+    background-color: #aaa;
 }
 
