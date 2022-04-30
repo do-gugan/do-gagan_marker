@@ -147,13 +147,17 @@ main {
     background-color: #999;
 }
 
+.guide {
+    color:#444;
+    font-size: 0.8em;
+}
 select {
     background-color: #ccc;
     border: 1px solid #444;
     padding: 0.3em 0.5em 0.3em 0.5em;
 }
 
-input[type="number"] {
+input {
     background-color: #fff;
     border: 1px solid #444;
     padding: 0.3em 0.5em 0.3em 0.5em;

@@ -1,42 +1,59 @@
 ﻿//各種デフォルト値
 const defaultMemo = "チャプター";
 // $tの位置に記入済みのテキストが挿入される
-const snippet1 = "タスク開始:$t$c";
-const snippet2 = "参加者「$t$c」";
-const snippet3 = "進行役「$t$c」";
-const snippet4 = "見所！:$t$c";
-const snippet5 = "タスク完了:$t$c";
+let snippets = ["","タスク開始:$t$c","参加者「$t$c」","進行役「$t$c」","見所！:$t$c","タスク完了:$t$c"];
 
-document.getElementById('snippet1').innerText = snippet1.replace("$t","").replace("$c","");
-document.getElementById('snippet2').innerText = snippet2.replace("$t","").replace("$c","");
-document.getElementById('snippet3').innerText = snippet3.replace("$t","").replace("$c","");
-document.getElementById('snippet4').innerText = snippet4.replace("$t","").replace("$c","");
-document.getElementById('snippet5').innerText = snippet5.replace("$t","").replace("$c","");
+document.getElementById('snippet1').innerText = "F1:"+snippets[1].replace("$t","").replace("$c","");
+document.getElementById('snippet2').innerText = "F2:"+snippets[2].replace("$t","").replace("$c","");
+document.getElementById('snippet3').innerText = "F3:"+snippets[3].replace("$t","").replace("$c","");
+document.getElementById('snippet4').innerText = "F4:"+snippets[4].replace("$t","").replace("$c","");
+document.getElementById('snippet5').innerText = "F5:"+snippets[5].replace("$t","").replace("$c","");
 
 //キーボードショートカット
 document.body.addEventListener('keydown', (event)=>{
     if (event.code == "F1") {
         if (document.getElementById('snippet1').disabled == false){
-            console.log("F1");
+            insertSnippet(1);
         }
     } else if (event.code == "F2") {
         if (document.getElementById('snippet2').disabled == false){
-            console.log("F2");
+            insertSnippet(2);
         }
     } else if (event.code == "F3") {
         if (document.getElementById('snippet3').disabled == false){
-            console.log("F3");
+            insertSnippet(3);
         }
     } else if (event.code == "F4") {
         if (document.getElementById('snippet4').disabled == false){
-            console.log("F5");
+            insertSnippet(4);
         }
-    } else if (event.code == "F6") {
+    } else if (event.code == "F5") {
         if (document.getElementById('snippet5').disabled == false){
-            console.log("F6");
+            insertSnippet(5);
         }
     }
 });
+
+//メモ欄でShift + Enterを押したら記録実行
+document.getElementById('newMemo').addEventListener('keydown', (event)=>{
+    console.log(event.keyCode);
+    if (event.keyCode === 13) {
+        document.getElementById('mark').click();
+    }
+});
+
+//Fスニペットの挿入
+function insertSnippet(num) {
+    console.log("F" + num);
+    let snippet = snippets[num];
+    const memoField = document.getElementById('newMemo');
+    const currentMemo = memoField.value;
+    memoField.value = snippet.replace("$t", currentMemo);
+    const pos = memoField.value.indexOf("$c");
+    memoField.value = memoField.value.replace("$c", "");
+    memoField.focus();
+    memoField.setSelectionRange(pos,pos);
+}
 
 //手動カウンタースタートボタン
 let manualCountTimer; //手動カウンター用タイマー
@@ -114,7 +131,7 @@ document.getElementById('syncMethod').addEventListener('change', ()=>{
     }
 });
 
-// マークボタン
+// 記録実行ボタン
 document.getElementById('mark').addEventListener('click', ()=>{
     const timecode = document.getElementById('timecode').innerText;
     //console.log(timecode);
@@ -123,10 +140,15 @@ document.getElementById('mark').addEventListener('click', ()=>{
     let marker = document.createElement('div');
     marker.classList.add("record");
     const tc = document.getElementById('timecode').innerText;
-    const memo = defaultMemo;
+    let memo = "";
+    if (document.getElementById('newMemo').value != "") {
+        memo = document.getElementById('newMemo').value;
+    } else {
+        memo = defaultMemo;
+    }
+    document.getElementById('newMemo').value = "";
     marker.innerHTML = '<span class="tc">' + tc + '</span><span class="memo">' + memo + '</span>\n';
-    document.getElementById('list').appendChild(marker);
-    
+    document.getElementById('list').appendChild(marker);    
 }, false);
 
 // 保存ボタン
