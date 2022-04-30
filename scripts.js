@@ -4,14 +4,14 @@ const defaultMemo = "チャプター";
 const snippet1 = "タスク開始:$t$c";
 const snippet2 = "参加者「$t$c」";
 const snippet3 = "進行役「$t$c」";
-const snippet4 = "見所！$t$c";
+const snippet4 = "見所！:$t$c";
 const snippet5 = "タスク完了:$t$c";
 
-document.getElementById('snippet1').innerText = snippet1.replace("$t","");
-document.getElementById('snippet2').innerText = snippet2.replace("$t","");
-document.getElementById('snippet3').innerText = snippet3.replace("$t","");
-document.getElementById('snippet4').innerText = snippet4.replace("$t","");
-document.getElementById('snippet5').innerText = snippet5.replace("$t","");
+document.getElementById('snippet1').innerText = snippet1.replace("$t","").replace("$c","");
+document.getElementById('snippet2').innerText = snippet2.replace("$t","").replace("$c","");
+document.getElementById('snippet3').innerText = snippet3.replace("$t","").replace("$c","");
+document.getElementById('snippet4').innerText = snippet4.replace("$t","").replace("$c","");
+document.getElementById('snippet5').innerText = snippet5.replace("$t","").replace("$c","");
 
 //キーボードショートカット
 document.body.addEventListener('keydown', (event)=>{
@@ -62,7 +62,7 @@ document.getElementById('start').addEventListener('click', ()=>{
 function updateManualCounter() {
     const now = new Date();
     const elapsed = (now.getTime() - manualCountStarted.getTime()); //ミリ秒
-    document.getElementById('timecode').innerText = secToHHMMSS(elapsed);   
+    document.getElementById('timecode').innerText = secToHHMMSS(elapsed + document.getElementById('manual_timecode_offset').value * 1000);   
 }
 
 function toggleControls(b) {
@@ -76,11 +76,43 @@ function toggleControls(b) {
     document.getElementById('show_timecode_settings').disabled = !b;
 }
 
-//カウンター設定ボタン
+//カウンター設定ボタン（設定エリアを表示／非表示）
 document.getElementById('show_timecode_settings').addEventListener('click', ()=>{
-
+    const block = document.getElementById('timecode_settings_block');
+    const main = document.getElementById('main');
+    if (block.style.display == "none") {
+        main.style.gridTemplateRows = "2.5em 5em auto 3em 1em";
+        block.style.display = "block";
+    } else {
+        main.style.gridTemplateRows = "2.5em 0em auto 3em 1em";
+        block.style.display = "none";
+    }
 });
 
+//同期方法の切り替え
+document.getElementById('syncMethod').addEventListener('change', ()=>{
+    console.log(document.getElementById('syncMethod').value);
+    switch (document.getElementById('syncMethod').value) {
+        case 'manual':
+            console.log('manual');
+            document.getElementById('obs_settings').style.display = 'none';
+            document.getElementById('atem_settings').style.display = 'none';
+            document.getElementById('manual_settings').style.display = 'block';
+            break;
+        case 'obs':
+            console.log('obs');
+            document.getElementById('manual_settings').style.display = 'none';
+            document.getElementById('atem_settings').style.display = 'none';
+            document.getElementById('obs_settings').style.display = 'block';
+            break;
+        case 'atem':
+            console.log('atem');
+            document.getElementById('obs_settings').style.display = 'none';
+            document.getElementById('manual_settings').style.display = 'none';
+            document.getElementById('atem_settings').style.display = 'block';
+            break;
+    }
+});
 
 // マークボタン
 document.getElementById('mark').addEventListener('click', ()=>{
