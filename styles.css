@@ -59,11 +59,11 @@ main {
   
 }
 #newMemo {
-    background-color: #fff;
     width: 80%;
     margin: 1em;
     border: 1px solid #444
 }
+
 #mark {
     width: 50%;
 }
@@ -162,3 +162,9 @@ input {
     border: 1px solid #444;
     padding: 0.3em 0.5em 0.3em 0.5em;
 }
+
+input:disabled {
+    color:#666;
+    background-color: #ccc !important;
+}
+

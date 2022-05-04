@@ -9,6 +9,12 @@ document.getElementById('snippet3').innerText = "F3:"+snippets[3].replace("$t","
 document.getElementById('snippet4').innerText = "F4:"+snippets[4].replace("$t","").replace("$c","");
 document.getElementById('snippet5').innerText = "F5:"+snippets[5].replace("$t","").replace("$c","");
 
+//ブラウザウインドウを閉じる時に警告を表示する
+window.onbeforeunload = function(e) {
+    return " ";
+}
+
+
 //キーボードショートカット
 document.body.addEventListener('keydown', (event)=>{
     if (event.code == "F1") {
@@ -82,7 +88,9 @@ function updateManualCounter() {
     document.getElementById('timecode').innerText = secToHHMMSS(elapsed + document.getElementById('manual_timecode_offset').value * 1000);   
 }
 
+//各UIのグレーアウトを解除／復帰
 function toggleControls(b) {
+    document.getElementById('newMemo').disabled = b;
     document.getElementById('mark').disabled = b;
     document.getElementById('snippet1').disabled = b;
     document.getElementById('snippet2').disabled = b;
