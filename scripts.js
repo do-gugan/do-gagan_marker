@@ -110,11 +110,12 @@ function toggleControls(b) {
 document.getElementById('show_timecode_settings').addEventListener('click', ()=>{
     const block = document.getElementById('timecode_settings_block');
     const main = document.getElementById('main');
-    if (block.style.display == "none") {
-        main.style.gridTemplateRows = "2.5em 5em auto 3em 1em";
+    console.log(block.style.display);
+    if (block.style.display != "block") {
+        main.style.gridTemplateRows = "3.5em 5.5em 3.5em auto 3em 1em";
         block.style.display = "block";
     } else {
-        main.style.gridTemplateRows = "2.5em 0em auto 3em 1em";
+        main.style.gridTemplateRows = "3.5em 0em 3.5em auto 3em 1em";
         block.style.display = "none";
     }
 });
