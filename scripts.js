@@ -20,22 +20,27 @@ document.body.addEventListener('keydown', (event)=>{
     if (event.code == "F1") {
         if (document.getElementById('snippet1').disabled == false){
             insertSnippet(1);
+            event.preventDefault();
         }
     } else if (event.code == "F2") {
         if (document.getElementById('snippet2').disabled == false){
             insertSnippet(2);
+            event.preventDefault();
         }
     } else if (event.code == "F3") {
         if (document.getElementById('snippet3').disabled == false){
             insertSnippet(3);
+            event.preventDefault();
         }
     } else if (event.code == "F4") {
         if (document.getElementById('snippet4').disabled == false){
             insertSnippet(4);
+            event.preventDefault();
         }
     } else if (event.code == "F5") {
         if (document.getElementById('snippet5').disabled == false){
             insertSnippet(5);
+            event.preventDefault();
         }
     }
 });
