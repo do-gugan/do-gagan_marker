@@ -3,17 +3,30 @@ const defaultMemo = "チャプター";
 // $tの位置に記入済みのテキストが挿入される
 let snippets = ["","タスク開始:$t$c","参加者「$t$c」","進行役「$t$c」","見所！:$t$c","タスク完了:$t$c"];
 
-document.getElementById('snippet1').innerText = "F1:"+snippets[1].replace("$t","").replace("$c","");
-document.getElementById('snippet2').innerText = "F2:"+snippets[2].replace("$t","").replace("$c","");
-document.getElementById('snippet3').innerText = "F3:"+snippets[3].replace("$t","").replace("$c","");
-document.getElementById('snippet4').innerText = "F4:"+snippets[4].replace("$t","").replace("$c","");
-document.getElementById('snippet5').innerText = "F5:"+snippets[5].replace("$t","").replace("$c","");
+document.getElementById('snippet1').innerHTML = "<span class=\"fLabel\">F1:</span>"+snippets[1].replace("$t","").replace("$c","");
+document.getElementById('snippet2').innerHTML = "<span class=\"fLabel\">F2:</span>"+snippets[2].replace("$t","").replace("$c","");
+document.getElementById('snippet3').innerHTML = "<span class=\"fLabel\">F3:</span>"+snippets[3].replace("$t","").replace("$c","");
+document.getElementById('snippet4').innerHTML = "<span class=\"fLabel\">F4:</span>"+snippets[4].replace("$t","").replace("$c","");
+document.getElementById('snippet5').innerHTML = "<span class=\"fLabel\">F5:</span>"+snippets[5].replace("$t","").replace("$c","");
 
 //ブラウザウインドウを閉じる時に警告を表示する
 window.onbeforeunload = function(e) {
     return " ";
 }
 
+//「使い方」ボタン
+document.getElementById('guide').addEventListener('click', ()=>{
+    let guide = "（ブラウザ上で完結して動作しており、入力内容がサーバーに送信／保存されることはありません）\n\n";
+    guide += "■使い方\n\n";
+    guide += "1) 録画ツールとタイミングを合わせて「スタート」を押しカウンターを同期させます。\n";
+    guide += "2) ピンクのエリアのテキスト欄にメモ内容を入れ（空欄でも可）、Enterまたはペンアイコンのクリックで記録します。\n";
+    guide += "3) セッションが終わったらパープルのエリアの保存ボタンからファイルとして保存します。\n";
+    guide += "4) 動画ファイルと同じ場所、同じ名前で拡張子を.dggn.txtとして保存すれば、動画眼3で読み込まれます。\n\n";
+    guide += "■便利技\n\n";
+    guide += "・録画開始と同時に「スタート」を押すのが難しい場合は、水色エリアの歯車ボタンからオフセット秒数を指定できます。\n";
+    guide += "・画面最下部のボタンまたはF1〜5キーで定型文を入力できます。\n";
+    alert(guide);
+});
 
 //キーボードショートカット
 document.body.addEventListener('keydown', (event)=>{
@@ -110,12 +123,24 @@ function toggleControls(b) {
 document.getElementById('show_timecode_settings').addEventListener('click', ()=>{
     const block = document.getElementById('timecode_settings_block');
     const main = document.getElementById('main');
-    console.log(block.style.display);
+    const mediaQuery = window.matchMedia('(max-width: 600px)');
     if (block.style.display != "block") {
-        main.style.gridTemplateRows = "3.5em 5.5em 3.5em auto 3em 1em";
+        if (mediaQuery.matches) {
+            //SP （スニペットブロックの高さで調整）
+            main.style.gridTemplateRows = "3em auto 3.5em 5.5em 3.5em 0.5em";
+        } else {
+            //PC
+            main.style.gridTemplateRows = "3em auto 3.5em 5.5em 3.5em 1em";
+        }
         block.style.display = "block";
     } else {
-        main.style.gridTemplateRows = "3.5em 0em 3.5em auto 3em 1em";
+        if (mediaQuery.matches) {
+            //SP （スニペットブロックの高さで調整）
+            main.style.gridTemplateRows = "3em auto 3.5em 0em 3.5em 0.5em";
+        } else {
+            //PC
+            main.style.gridTemplateRows = "3em auto 3.5em 0em 3.5em 1em";
+        }
         block.style.display = "none";
     }
 });

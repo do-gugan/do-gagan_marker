@@ -1,4 +1,8 @@
-﻿body {
+﻿html {
+    background-color:789;
+}
+
+body {
     background-color: #999;
 }
 
@@ -6,16 +10,16 @@ main {
     height: calc(100vh - 1em);
     display: grid;
     grid-template-columns: 5fr;
-    grid-template-rows: 3.5em 0em 3.5em auto 3em 1em;
+    grid-template-rows: 3em auto 3.5em 0em 3.5em 1em;
 }
 
-/* 上部タイムコードブロック */
+/* タイムコードブロック */
 #timecode_block {
     background-color: #cde;
     grid-column-start: 1;
     grid-column-end: 3;
-    grid-row-start: 1;
-    grid-row-end: 2;
+    grid-row-start: 3;
+    grid-row-end: 4;
 
     padding:0.5em;
     display: flex;
@@ -39,14 +43,14 @@ main {
     vertical-align: middle;
 }
 
-/* 上部タイムコード設定ブロック */
+/* タイムコード設定ブロック（開閉部分） */
 #timecode_settings_block {
     display:none;
     background-color: #cef;
     grid-column-start: 1;
     grid-column-end: 3;
-    grid-row-start: 2;
-    grid-row-end: 3;
+    grid-row-start: 4;
+    grid-row-end: 5;
 }
 
 .setting_block {
@@ -61,13 +65,13 @@ main {
     
 }
 
-/* 左マーカー内容操作ブロック */
+/* マーカー内容操作ブロック */
 #input_controls_block {
     background-color: #fac;
     grid-column-start: 1;
     grid-column-end: 3;
-    grid-row-start: 3;
-    grid-row-end: 4;
+    grid-row-start: 5;
+    grid-row-end: 6;
 
     /* 子要素に対する指定 */
     display: flex;
@@ -89,14 +93,14 @@ main {
     margin-right:0.4em;
 }
 
-/* 右リストブロック */
+/* リストブロック */
 
 #list_block {
     background-color: #cfa;
     grid-column-start: 1;
     grid-column-end: 3;
-    grid-row-start: 4;
-    grid-row-end: 5;
+    grid-row-start: 2;
+    grid-row-end: 3;
 
     padding: 1.5em;
 }
@@ -113,23 +117,32 @@ main {
     margin-right: 1em;
 }
 
-.memo {
 
-}
-
-/* 下部保存ボタンブロック */
+/* 保存ボタンブロック */
 #save_button_block {
     background-color: #a9f;
     grid-column-start: 1;
     grid-column-end: 3;
-    grid-row-start: 5;
-    grid-row-end: 6;
+    grid-row-start: 1;
+    grid-row-end: 2;
 
     /* 子要素に対する指定 */
-    display: grid;
-    justify-items: right;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 0.25em;
 }
 
+#guide {
+    width: 5em;
+    height: 2.5em;
+    margin: 0em 1.0em 0em 1.5em;
+}
+
+#title {
+    font-size:1.3em;
+    font-weight: bold;
+    margin-top: 0.3em;
+}
 #save {
     margin: 0em 1.0em 0em 1.5em;
 }
@@ -146,10 +159,6 @@ main {
     justify-items: auto;
     flex-direction: row;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-}
-
-.snippet {
-
 }
 
 /* 汎用クラス */
@@ -187,12 +196,14 @@ select {
     background-color: #ccc;
     border: 1px solid #444;
     padding: 0.3em 0.5em 0.3em 0.5em;
+    margin-left:0.5em;
 }
 
 input {
     background-color: #fff;
     border: 1px solid #444;
     padding: 0.3em 0.5em 0.3em 0.5em;
+    margin-left: 0.5em;
 }
 
 input:disabled {
@@ -200,3 +211,34 @@ input:disabled {
     background-color: #ccc !important;
 }
 
+/* スマホ対応 */
+@media screen and (max-width: 600px) {
+    body {
+        font-size:0.9em;
+        min-width: 375px;
+    }
+    main {
+        grid-template-rows: 3em auto 3.5em 0em 3.5em 0.5em;
+    }
+    #guide {
+        font-size: 0.9em;
+    }
+    #timecode {
+        font-size: 0.9em;
+    }
+    #timecode_block div:nth-child(1) {
+        flex-basis: 10em;
+    }
+    #timecode_block div:nth-child(2) {
+        flex-basis: 10em;
+        flex-grow: 1;
+    }
+    #snippets_block {
+        font-size: 0.5em;
+    }
+    .fLabel {
+        display: none;
+        height: 4em;
+    }
+
+}
