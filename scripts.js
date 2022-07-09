@@ -218,7 +218,7 @@ document.getElementById('save').addEventListener('click', (event)=>{
  */
 function HHMMSStoSec(hhmmss) {
     const tc = hhmmss.split(":");
-    return parseInt(tc[0]*360) + parseInt(tc[1]*60) + parseInt(tc[2]);
+    return parseInt(tc[0]*3600) + parseInt(tc[1]*60) + parseInt(tc[2]);
 }
 
 function secToHHMMSS (sec) {
