@@ -17,6 +17,7 @@ window.onbeforeunload = function(e) {
 //「使い方」ボタン
 document.getElementById('guide').addEventListener('click', ()=>{
     let guide = "（ブラウザ上で完結して動作しており、入力内容がサーバーに送信／保存されることはありません）\n\n";
+    guide += "（このダイアログはスクロールします）\n\n";
     guide += "■使い方\n\n";
     guide += "1) 録画ツールとタイミングを合わせて「スタート」を押しカウンターを同期させます。\n";
     guide += "2) ピンクのエリアのテキスト欄にメモ内容を入れ（空欄でも可）、Enterまたはペンアイコンのクリックで記録します。\n";
@@ -25,6 +26,8 @@ document.getElementById('guide').addEventListener('click', ()=>{
     guide += "■便利技\n\n";
     guide += "・録画開始と同時に「スタート」を押すのが難しい場合は、水色エリアの歯車ボタンからオフセット秒数を指定できます。\n";
     guide += "・画面最下部のボタンまたはF1〜5キーで定型文を入力できます。\n";
+    guide += "・Shift + F1〜5キーで定型文入力と同時に記録できます（入力中テキストには影響しません）。\n";
+    guide += "・既存のチャプターラベルをクリックして編集できます。[NEW]\n";
     alert(guide);
 });
 
@@ -32,27 +35,27 @@ document.getElementById('guide').addEventListener('click', ()=>{
 document.body.addEventListener('keydown', (event)=>{
     if (event.code == "F1") {
         if (document.getElementById('snippet1').disabled == false){
-            insertSnippet(1);
+            insertSnippet(1,event.shiftKey);
             event.preventDefault();
         }
     } else if (event.code == "F2") {
         if (document.getElementById('snippet2').disabled == false){
-            insertSnippet(2);
+            insertSnippet(2,event.shiftKey);
             event.preventDefault();
         }
     } else if (event.code == "F3") {
         if (document.getElementById('snippet3').disabled == false){
-            insertSnippet(3);
+            insertSnippet(3,event.shiftKey);
             event.preventDefault();
         }
     } else if (event.code == "F4") {
         if (document.getElementById('snippet4').disabled == false){
-            insertSnippet(4);
+            insertSnippet(4,event.shiftKey);
             event.preventDefault();
         }
     } else if (event.code == "F5") {
         if (document.getElementById('snippet5').disabled == false){
-            insertSnippet(5);
+            insertSnippet(5,event.shiftKey);
             event.preventDefault();
         }
     }
@@ -67,16 +70,25 @@ document.getElementById('newMemo').addEventListener('keydown', (event)=>{
 });
 
 //Fスニペットの挿入
-function insertSnippet(num) {
-    console.log("F" + num);
+function insertSnippet(num, isShiftKeyDown) {
+    console.log("F" + num + " ShiftKey:" + isShiftKeyDown);
     let snippet = snippets[num];
     const memoField = document.getElementById('newMemo');
     const currentMemo = memoField.value;
-    memoField.value = snippet.replace("$t", currentMemo);
-    const pos = memoField.value.indexOf("$c");
-    memoField.value = memoField.value.replace("$c", "");
-    memoField.focus();
-    memoField.setSelectionRange(pos,pos);
+    if (isShiftKeyDown == false) {
+        //Shiftキーが押されていない
+        memoField.value = snippet.replace("$t", currentMemo);
+        const pos = memoField.value.indexOf("$c");
+        memoField.value = memoField.value.replace("$c", "");
+        memoField.focus();
+        memoField.setSelectionRange(pos,pos);
+    } else {
+        //Shiftキーが押されていた
+        memoField.value = snippets[num].replace("$t","").replace("$c","");
+        document.getElementById('mark').click();
+        memoField.value = currentMemo; //元々あったテキストを戻す
+        
+    }
 }
 
 //手動カウンタースタートボタン
@@ -89,11 +101,13 @@ document.getElementById('start').addEventListener('click', ()=>{
         manualCountStarted = new Date();
         manualCountTimer = setInterval(updateManualCounter, 1000);
         btn.innerText = "ストップ"
+        document.getElementById('timecode').style.color = "#c33";
         toggleControls(false);
     } else {
         //ストップ処理
         clearTimeout(manualCountTimer);
         btn.innerText = "スタート"
+        document.getElementById('timecode').style.color = "#000";
         manualCountStarted = null;
         toggleControls(true);
     }
@@ -186,13 +200,12 @@ document.getElementById('mark').addEventListener('click', ()=>{
         memo = defaultMemo;
     }
     document.getElementById('newMemo').value = "";
-    marker.innerHTML = '<span class="tc">' + tc + '</span><span class="memo">' + memo + '</span>\n';
+    marker.innerHTML = '<span class="tc">' + tc + '</span><span class="memo" onClick="editText(this);">' + memo + '</span>\n';
     document.getElementById('list').appendChild(marker);    
 }, false);
 
-// 保存ボタン
-document.getElementById('save').addEventListener('click', (event)=>{
-    // テキストファイルオブジェクトを生成
+// 保存用テキスト生成（ファイル保存、コピー両用
+function prepareRecordToSave() {
     const records = document.querySelectorAll("#list .record");
     console.log("record count:"+ records.length);
     let text = "";
@@ -204,12 +217,35 @@ document.getElementById('save').addEventListener('click', (event)=>{
         line += "\t0\n"; //話者コード
         text += line;
     });
-    console.log(text);
+    return text;
+
+}
+
+
+// 保存ボタン
+document.getElementById('save').addEventListener('click', (event)=>{
+    // テキストファイルオブジェクトを生成
+    const text = prepareRecordToSave();
     const blob = new Blob([text], { type: 'plain/text' });
  
     // a 要素の href 属性に Object URL を セット
     event.currentTarget.href = window.URL.createObjectURL(blob);
 }, false);
+
+// コピーボタン
+document.getElementById('copy').addEventListener('click', (event)=>{
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(prepareRecordToSave())
+        .then(() => {
+        alert("クリップボードにコピーしました。")
+        })
+        .catch(err => {
+            alert('クリップボードへのコピーに失敗しました。', err);
+        })
+    } else {
+        alert("このブラウザではコピーできません。ファイルダウンロードをご利用ください。")
+    }
+},false);
 
 /**
  * "時:分:秒"形式のタイムスタンプを秒にして返す
@@ -232,4 +268,13 @@ function secToHHMMSS (sec) {
   const time = `${hh}:${mm}:${ms.slice(0,2)}`;
 
   return time
+}
+
+function editText(obj) {
+    var res = window.prompt("チャプターラベルの編集", obj.innerText);
+    if (res != "") {
+        obj.innerText = res;
+    } else {
+        obj.innerText = "チャプター";
+    }
 }

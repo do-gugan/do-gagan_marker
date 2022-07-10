@@ -15,7 +15,7 @@ main {
 
 /* タイムコードブロック */
 #timecode_block {
-    background-color: #cde;
+    background-color: #d9ebf9; /* #cde */;
     grid-column-start: 1;
     grid-column-end: 3;
     grid-row-start: 3;
@@ -46,7 +46,7 @@ main {
 /* タイムコード設定ブロック（開閉部分） */
 #timecode_settings_block {
     display:none;
-    background-color: #cef;
+    background-color: #e2f6ff; /* #cef */;
     grid-column-start: 1;
     grid-column-end: 3;
     grid-row-start: 4;
@@ -67,7 +67,7 @@ main {
 
 /* マーカー内容操作ブロック */
 #input_controls_block {
-    background-color: #fac;
+    background-color: #ffe6f6; /* #fac */;
     grid-column-start: 1;
     grid-column-end: 3;
     grid-row-start: 5;
@@ -96,7 +96,7 @@ main {
 /* リストブロック */
 
 #list_block {
-    background-color: #cfa;
+    background-color: #f3ffee; /* #cfa */;
     grid-column-start: 1;
     grid-column-end: 3;
     grid-row-start: 2;
@@ -118,9 +118,9 @@ main {
 }
 
 
-/* 保存ボタンブロック */
+/* タイトルブロック */
 #save_button_block {
-    background-color: #a9f;
+    background-color: #efe0ff; /* #a9f */;
     grid-column-start: 1;
     grid-column-end: 3;
     grid-row-start: 1;
@@ -142,6 +142,10 @@ main {
     font-size:1.3em;
     font-weight: bold;
     margin-top: 0.3em;
+}
+#title > span {
+    font-size: 80%;
+    font-weight: normal;
 }
 #save {
     margin: 0em 1.0em 0em 1.5em;
