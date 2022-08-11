@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>動画眼マーカー</title>
+    <script src="https://kit.fontawesome.com/203539ac23.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+    <script>
+        /* Cache busting for css */
+        var element = document.createElement('link')
+        element.setAttribute('rel', 'stylesheet')
+        element.setAttribute('href', 'styles.css?ver=' + new Date().getTime())
+        document.getElementsByTagName("head")[0].appendChild(element)
+    </script>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+<main id="main">
+    <div id="save_button_block">
+        <button id="guide" class="button">使い方</button>
+        <div id="title">動画眼マーカー <span>Ver1.2</span></div>
+        <div>
+            <a href="#" id="copy"  class="iconButton"><i class="fa-solid fa-copy" title="クリップボードにコピー"></i></a>
+            <a href="#" id="save"  class="iconButton" download="rename_same_as_movie.dggn.txt"><i class="fa-solid fa-file-arrow-down" title="ローカルに保存"></i></a>
+            <a href="#" id="share" class="iconButton"><i class="fas fa-share-alt" title="共有"></i></a>
+        </div>
+    </div>
+    <div id="list_block">
+        <div id="list"></div>
+    </div>
+    <div id="timecode_block">
+    <div>
+        同期方法:<select id="syncMethod">
+            <option value="manual">手動</option>
+            <!--option value="obs">OBS Studio</option-->
+            <!--option value="atem">ATEM Switcher</option-->
+        </select> 
+        <button class="iconButton" id="show_timecode_settings"><i class="fa-solid fa-gear" title="タイムコード同期設定"></i></button>    
+    </div>
+    <div>
+        <span id="timecode">00:00:00</span>
+        <button class="button" id="start">スタート</button>
+    </div>
+    <div></div>
+</div>
+<div id="timecode_settings_block">
+    <div id="manual_settings" class="setting_block" style="display:block; background-color:#abc;">
+        開始オフセット:<input type="number" id="manual_timecode_offset" value="0" size="2" min="0" />秒
+    </div>
+    <div id="obs_settings" class="setting_block" style="display:none; background-color:#cba;">
+    </div>
+    <div id="atem_settings" class="setting_block" style="display:none; background-color:#bca;">
+    </div>
+</div>
+<div id="input_controls_block">
+    <input type="text" id="newMemo" disabled /><button id="mark" class="iconButton" disabled><i class="fa-solid fa-marker" title="記録"></i></button>
+</div>
+<div id="snippets_block">
+    <button id="snippet1" class="button snippet" disabled onclick="insertSnippet(1);">F1:</button>
+    <button id="snippet2" class="button snippet" disabled onclick="insertSnippet(2);">F2:</button>
+    <button id="snippet3" class="button snippet" disabled onclick="insertSnippet(3);">F3:</button>
+    <button id="snippet4" class="button snippet" disabled onclick="insertSnippet(4);">F4:</button>
+    <button id="snippet5" class="button snippet" disabled onclick="insertSnippet(5);">F5:</button>
+</div>
+</main>
+</body>
+<script type="text/javascript" src="scripts.js"></script>
+</html>

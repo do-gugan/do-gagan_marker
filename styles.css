@@ -1,0 +1,266 @@
+﻿html {
+    background-color:789;
+}
+
+body {
+    background-color: #999;
+    font-family: "Helvetica Neue",
+        Arial,
+        "Hiragino Kaku Gothic ProN",
+        "Hiragino Sans",
+        Meiryo,
+        sans-serif;
+}
+
+main {
+    height: calc(100vh - 1em);
+    display: grid;
+    grid-template-columns: 5fr;
+    grid-template-rows: 3em auto 3.5em 0em 3.5em 1em;
+}
+
+/* タイムコードブロック */
+#timecode_block {
+    background-color: #d9ebf9; /* #cde */;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 3;
+    grid-row-end: 4;
+
+    padding:0.5em;
+    display: flex;
+}
+
+#timecode_block div:nth-child(1){
+    flex-basis: 17em;
+    flex-grow:1;
+}
+
+#timecode_block div:nth-child(2){
+    flex-basis: auto;
+    flex-grow:2;
+}
+
+
+#timecode {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 0.5em;
+    vertical-align: middle;
+}
+
+/* タイムコード設定ブロック（開閉部分） */
+#timecode_settings_block {
+    display:none;
+    background-color: #e2f6ff; /* #cef */;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 4;
+    grid-row-end: 5;
+}
+
+.setting_block {
+    width: 100%;
+    height: 100%;
+
+    padding: 0.5em;
+}
+
+
+#manurl_settings {
+    
+}
+
+/* マーカー内容操作ブロック */
+#input_controls_block {
+    background-color: #ffe6f6; /* #fac */;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 5;
+    grid-row-end: 6;
+
+    /* 子要素に対する指定 */
+    display: flex;
+    justify-items: center;
+    align-items: center;
+  
+}
+#newMemo {
+    width: 88%;
+    margin: 0.5em 0em 0.5em 1.5em;
+    border: 1px solid #444;
+    flex-basis: auto;
+    flex-grow: 2;
+}
+
+#mark {
+    width: 1.5em;
+    flex-basis: 3em;
+    margin-right:0.4em;
+}
+
+/* リストブロック */
+
+#list_block {
+    background-color: #f3ffee; /* #cfa */;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 3;
+
+    padding: 1.5em;
+}
+
+#list {
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #444;
+    padding: 0.4em;
+}
+
+.tc {
+    margin-right: 1em;
+}
+
+
+/* タイトルブロック */
+#save_button_block {
+    background-color: #efe0ff; /* #a9f */;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 2;
+
+    /* 子要素に対する指定 */
+    display: flex;
+    justify-content: space-between;
+    padding-top: 0.25em;
+}
+
+#guide {
+    width: 5em;
+    height: 2.5em;
+    margin: 0em 1.0em 0em 1.5em;
+}
+
+#title {
+    font-size:1.3em;
+    font-weight: bold;
+    margin-top: 0.3em;
+}
+#title > span {
+    font-size: 80%;
+    font-weight: normal;
+}
+#save {
+    margin: 0em 1.0em 0em 1.0em;
+}
+
+#share {
+    display: none;
+    margin: 0em 1.0em 0em 0em;
+}
+
+/* スニペット（F1〜F5）ショートカットブロック */
+#snippets_block {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 6;
+    grid-row-end: 7;
+
+    /* 子要素に対する指定 */
+    display: grid;
+    justify-items: auto;
+    flex-direction: row;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+/* 汎用クラス */
+.button {
+    color:black;
+    border: 1px solid #444;
+    padding: 0.3em 0.5em 0.3em 0.5em;
+    background-color: #ccc;
+    text-decoration: none;
+}
+.button:hover {
+    background-color: #ddd;
+}
+.button:disabled {
+    color:#666;
+    background-color: #999;
+}
+
+.iconButton {
+    color: #444;
+    font-size: 1.5em;
+    vertical-align: middle;
+    padding: 0.2em;
+}
+
+.iconButton:hover {
+    color: #888;
+}
+
+.guide {
+    color:#444;
+    font-size: 0.8em;
+}
+select {
+    background-color: #ccc;
+    border: 1px solid #444;
+    padding: 0.3em 0.5em 0.3em 0.5em;
+    margin-left:0.5em;
+}
+
+input {
+    background-color: #fff;
+    border: 1px solid #444;
+    padding: 0.3em 0.5em 0.3em 0.5em;
+    margin-left: 0.5em;
+}
+
+input:disabled {
+    color:#666;
+    background-color: #ccc !important;
+}
+
+/* スマホ対応 */
+@media screen and (max-width: 600px) {
+    body {
+        font-size:0.9em;
+        min-width: 375px;
+    }
+    main {
+        height: calc(100dvh - 3em);
+        grid-template-rows: 3em auto 3.5em 0em 3.5em 0.5em;
+    }
+    #guide {
+        font-size: 0.9em;
+    }
+    #timecode {
+        font-size: 1.2em;
+    }
+    #timecode_block div:nth-child(1) {
+        flex-basis: 10em;
+    }
+    #timecode_block div:nth-child(2) {
+        flex-basis: 10em;
+        flex-grow: 1;
+    }
+    #snippets_block {
+        font-size: 0.8em;
+    }
+    .fLabel {
+        display: none;
+        height: 4em;
+    }
+    #save {
+        display: none;
+    }
+    #share {
+        display: inline-block;
+    }
+
+}
