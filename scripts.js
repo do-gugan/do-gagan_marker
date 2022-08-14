@@ -1,5 +1,7 @@
 ﻿//各種デフォルト値
 const defaultMemo = "チャプター";
+let syncMethod = "timeofday"; //デフォルト同期方法
+
 // $tの位置に記入済みのテキストが挿入される
 let snippets = ["","タスク開始:$t$c","参加者「$t$c」","進行役「$t$c」","見所！:$t$c","タスク完了:$t$c"];
 
@@ -8,6 +10,32 @@ document.getElementById('snippet2').innerHTML = "<span class=\"fLabel\">F2:</spa
 document.getElementById('snippet3').innerHTML = "<span class=\"fLabel\">F3:</span>"+snippets[3].replace("$t","").replace("$c","");
 document.getElementById('snippet4').innerHTML = "<span class=\"fLabel\">F4:</span>"+snippets[4].replace("$t","").replace("$c","");
 document.getElementById('snippet5').innerHTML = "<span class=\"fLabel\">F5:</span>"+snippets[5].replace("$t","").replace("$c","");
+
+//ページを開いた時に実行
+window.onload = function() {
+    //URLパラメーター取得
+    console.log("onload");
+    const params = (new URL(document.location)).searchParams;
+    console.log(params.get('sync'));
+    switch (params.get('sync')) {
+        case 'timeofday':
+            syncMethod = "timeofday";
+            document.getElementById('syncMethod').value = 'timeofday';
+            break;
+        case 'manual':
+            syncMethod = "manual";            
+            document.getElementById('syncMethod').value = 'manual';
+    }
+    if (syncMethod == 'timeofday') {
+        //同期方法が時刻の場合
+        document.getElementById('start').style.display = 'none';
+        toggleControls(false);
+        document.getElementById('timecode').style.color = "#33d";
+        setInterval(updateTimeOfDayCounter, 1000);
+    }
+
+}
+
 
 //ブラウザウインドウを閉じる時に警告を表示する
 window.onbeforeunload = function(e) {
@@ -120,8 +148,18 @@ function updateManualCounter() {
     document.getElementById('timecode').innerText = secToHHMMSS(elapsed + document.getElementById('manual_timecode_offset').value * 1000);   
 }
 
+//1秒毎に呼び出され時刻カウンターを更新
+function updateTimeOfDayCounter() {
+    const now = new Date();
+    const hh = ('00' + now.getHours()).slice(-2);
+    const mm = ('00' + now.getMinutes()).slice(-2);
+    const ss = ('00' + now.getSeconds()).slice(-2);
+    document.getElementById('timecode').innerText = hh+":"+mm+":"+ss;   
+}
+
 //各UIのグレーアウトを解除／復帰
 function toggleControls(b) {
+    console.log("hoge");
     document.getElementById('newMemo').disabled = b;
     document.getElementById('mark').disabled = b;
     document.getElementById('snippet1').disabled = b;
@@ -161,27 +199,8 @@ document.getElementById('show_timecode_settings').addEventListener('click', ()=>
 
 //同期方法の切り替え
 document.getElementById('syncMethod').addEventListener('change', ()=>{
-    console.log(document.getElementById('syncMethod').value);
-    switch (document.getElementById('syncMethod').value) {
-        case 'manual':
-            console.log('manual');
-            document.getElementById('obs_settings').style.display = 'none';
-            document.getElementById('atem_settings').style.display = 'none';
-            document.getElementById('manual_settings').style.display = 'block';
-            break;
-        case 'obs':
-            console.log('obs');
-            document.getElementById('manual_settings').style.display = 'none';
-            document.getElementById('atem_settings').style.display = 'none';
-            document.getElementById('obs_settings').style.display = 'block';
-            break;
-        case 'atem':
-            console.log('atem');
-            document.getElementById('obs_settings').style.display = 'none';
-            document.getElementById('manual_settings').style.display = 'none';
-            document.getElementById('atem_settings').style.display = 'block';
-            break;
-    }
+    //GETパラメーターを変更してリロード
+    window.location.href = "?sync="+document.getElementById('syncMethod').value;
 });
 
 // 記録実行ボタン
@@ -211,7 +230,14 @@ function prepareRecordToSave() {
     let text = "";
     records.forEach(r => {
         let line = "";
-        line += HHMMSStoSec(r.querySelector(".tc").innerText); //タイムコード
+        switch (syncMethod) {
+            case 'timeofday':
+                line += r.querySelector(".tc").innerText; //時:分:秒のまま
+                break;
+            case 'manual':
+                line += HHMMSStoSec(r.querySelector(".tc").innerText); //秒換算値
+                break;
+        }
         line += "\t";
         line += r.querySelector(".memo").innerText; //メモ
         line += "\t0\n"; //話者コード

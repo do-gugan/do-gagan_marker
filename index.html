@@ -18,7 +18,7 @@
 <main id="main">
     <div id="save_button_block">
         <button id="guide" class="button">使い方</button>
-        <div id="title">動画眼マーカー <span>Ver1.2</span></div>
+        <div id="title">動画眼マーカー <span>Ver2.0</span></div>
         <div>
             <a href="#" id="copy"  class="iconButton"><i class="fa-solid fa-copy" title="クリップボードにコピー"></i></a>
             <a href="#" id="save"  class="iconButton" download="rename_same_as_movie.dggn.txt"><i class="fa-solid fa-file-arrow-down" title="ローカルに保存"></i></a>
@@ -31,6 +31,7 @@
     <div id="timecode_block">
     <div>
         同期方法:<select id="syncMethod">
+            <option value="timeofday">現在時刻</option>
             <option value="manual">手動</option>
             <!--option value="obs">OBS Studio</option-->
             <!--option value="atem">ATEM Switcher</option-->
