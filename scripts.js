@@ -32,6 +32,9 @@ window.onload = function() {
         toggleControls(false);
         document.getElementById('timecode').style.color = "#33d";
         setInterval(updateTimeOfDayCounter, 1000);
+    } else {
+        //同期方法が手動の場合
+        document.getElementById('timeOfDayOffsetBlock').style.display = 'none';
     }
 
 }
@@ -144,20 +147,28 @@ document.getElementById('start').addEventListener('click', ()=>{
     }
 }, false);
 
-//1秒毎に呼び出され手動カウンターを更新
+//1秒毎に呼び出され手動カウンターを更新（手動同期版）
 function updateManualCounter() {
     const now = new Date();
     const elapsed = (now.getTime() - manualCountStarted.getTime()); //ミリ秒
     document.getElementById('timecode').innerText = secToHHMMSS(elapsed + document.getElementById('manual_timecode_offset').value * 1000);   
 }
 
-//1秒毎に呼び出され時刻カウンターを更新
+//1秒毎に呼び出され時刻カウンターを更新（現在時刻時刻版）
 function updateTimeOfDayCounter() {
     const now = new Date();
+
+    //指定秒数の補正
+    const seconds = now.getSeconds();
+    if (Number.isInteger(document.getElementById("timeOfDayOffset").value) || document.getElementById("timeOfDayOffset").value == ""){
+        document.getElementById("timeOfDayOffset").value = 0;
+    }
+    now.setSeconds(seconds + parseInt(document.getElementById("timeOfDayOffset").value));
+
     const hh = ('00' + now.getHours()).slice(-2);
     const mm = ('00' + now.getMinutes()).slice(-2);
     const ss = ('00' + now.getSeconds()).slice(-2);
-    document.getElementById('timecode').innerText = hh+":"+mm+":"+ss;   
+    document.getElementById('timecode').innerText = hh+":"+mm+":"+ss;
 }
 
 //各UIのグレーアウトを解除／復帰

@@ -176,6 +176,17 @@ main {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
+/* 「現在時刻」の時差補正設定欄 */
+#timeOfDayOffsetBlock {
+    color:#555;
+    font-size:0.8em;
+}
+
+#timeOfDayOffset {
+    text-align: right;
+    width:4em;
+}
+
 /* 汎用クラス */
 .button {
     color:black;
