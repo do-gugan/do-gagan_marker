@@ -14,9 +14,9 @@ document.getElementById('snippet5').innerHTML = "<span class=\"fLabel\">F5:</spa
 //ページを開いた時に実行
 window.onload = function() {
     //URLパラメーター取得
-    console.log("onload");
+    //console.log("onload");
     const params = (new URL(document.location)).searchParams;
-    console.log(params.get('sync'));
+    //console.log(params.get('sync'));
     switch (params.get('sync')) {
         case 'timeofday':
             syncMethod = "timeofday";
@@ -46,11 +46,14 @@ window.onbeforeunload = function(e) {
 document.getElementById('guide').addEventListener('click', ()=>{
     let guide = "（ブラウザ上で完結して動作しており、入力内容がサーバーに送信／保存されることはありません）\n\n";
     guide += "（このダイアログはスクロールします）\n\n";
-    guide += "■使い方\n\n";
-    guide += "1) 録画ツールとタイミングを合わせて「スタート」を押しカウンターを同期させます。\n";
-    guide += "2) ピンクのエリアのテキスト欄にメモ内容を入れ（空欄でも可）、Enterまたはペンアイコンのクリックで記録します。\n";
-    guide += "3) セッションが終わったらパープルのエリアの保存ボタンからファイルとして保存します。\n";
-    guide += "4) 動画ファイルと同じ場所、同じ名前で拡張子を.dggn.txtとして保存すれば、動画眼3で読み込まれます。\n\n";
+    guide += "■同期方法「現在時刻」\n";
+    guide += "・事前の同期は必要ありません。動画眼3で読み込む際に開始時刻を指定することで同期します。\n\n";
+    guide += "■同期方法「手動」\n";
+    guide += "・録画ツールとタイミングを合わせて「スタート」を押しカウンターを同期させます。\n\n";
+    guide += "■使い方　共通\n";
+    guide += "1) ピンクのエリアのテキスト欄にメモ内容を入れ（空欄でも可）、Enterまたはペンアイコンのクリックで記録します。\n";
+    guide += "2) セッションが終わったらパープルのエリアの保存ボタンからファイルとして保存します。\n";
+    guide += "3) 動画ファイルと同じ場所、同じ名前で拡張子を.dggn.txtとして保存すれば、動画眼3で読み込まれます。\n\n";
     guide += "■便利技\n\n";
     guide += "・録画開始と同時に「スタート」を押すのが難しい場合は、水色エリアの歯車ボタンからオフセット秒数を指定できます。\n";
     guide += "・画面最下部のボタンまたはF1〜5キーで定型文を入力できます。\n";
@@ -159,7 +162,6 @@ function updateTimeOfDayCounter() {
 
 //各UIのグレーアウトを解除／復帰
 function toggleControls(b) {
-    console.log("hoge");
     document.getElementById('newMemo').disabled = b;
     document.getElementById('mark').disabled = b;
     document.getElementById('snippet1').disabled = b;
@@ -223,7 +225,7 @@ document.getElementById('mark').addEventListener('click', ()=>{
     document.getElementById('list').appendChild(marker);    
 }, false);
 
-// 保存用テキスト生成（ファイル保存、コピー両用
+// 保存用テキスト生成（ファイル保存、コピー両用）
 function prepareRecordToSave() {
     const records = document.querySelectorAll("#list .record");
     console.log("record count:"+ records.length);
@@ -318,9 +320,13 @@ function secToHHMMSS (sec) {
   return time
 }
 
+/**
+ * メモをクリックして編集ダイアログを表示
+ * @param {*} obj 
+ */
 function editText(obj) {
     var res = window.prompt("チャプターラベルの編集", obj.innerText);
-    if (res != "") {
+    if (res.length > 0) {
         obj.innerText = res;
     } else {
         obj.innerText = "チャプター";
