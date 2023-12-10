@@ -4,6 +4,8 @@ UTの記録ツール（レコーダー、OBS Studio、ATEM Miniなど）とタ�
 
 ブラウザ上で完結動作し、サーバーにデータを保存することはありません（記入後は必ずファイルを保存してください）。
 
+実際の使い方は[こちらの記事](https://do-gugan.com/blog/archives/2023/12/do-gagan_timestamp_sync.html)にまとめています。
+
 ## 動作環境
 一般的なモダンブラウザで動作することを想定していますが、開発はMicrosoft Edge/Google Chromeを中心に行っており、意図通りに機能する可能性が高いです。
 
