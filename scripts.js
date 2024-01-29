@@ -3,7 +3,16 @@ const defaultMemo = "チャプター";
 let syncMethod = "timeofday"; //デフォルト同期方法
 
 // $tの位置に記入済みのテキストが挿入される
-let snippets = ["","タスク開始:$t$c","参加者「$t$c」","進行役「$t$c」","見所！:$t$c","タスク完了:$t$c"];
+const snippets_default = ["","タスク開始:$t$c","参加者「$t$c」","進行役「$t$c」","見所！:$t$c","タスク完了:$t$c"];
+//let snippets = ["","タスク開始:$t$c","参加者「$t$c」","進行役「$t$c」","見所！:$t$c","タスク完了:$t$c"];
+let snippets = [];
+
+//localstrageからカスタム定型文を読み込む
+snippets[1] = localStorage.getItem('snippet1') || snippets_default[1];
+snippets[2] = localStorage.getItem('snippet2') || snippets_default[2];
+snippets[3] = localStorage.getItem('snippet3') || snippets_default[3];
+snippets[4] = localStorage.getItem('snippet4') || snippets_default[4];
+snippets[5] = localStorage.getItem('snippet5') || snippets_default[5];
 
 document.getElementById('snippet1').innerHTML = "<span class=\"fLabel\">F1:</span>"+snippets[1].replace("$t","").replace("$c","");
 document.getElementById('snippet2').innerHTML = "<span class=\"fLabel\">F2:</span>"+snippets[2].replace("$t","").replace("$c","");
@@ -41,8 +50,11 @@ window.onload = function() {
 
 
 //ブラウザウインドウを閉じる時に警告を表示する
+//キャンセルした場合はなにもしない
 window.onbeforeunload = function(e) {
-    return " ";
+    if (document.getElementById('list').childElementCount > 0) {
+        return;
+    }
 }
 
 //「使い方」ボタン
@@ -60,10 +72,13 @@ document.getElementById('guide').addEventListener('click', ()=>{
     guide += "■便利技\n\n";
     guide += "・録画開始と同時に「スタート」を押すのが難しい場合は、水色エリアの歯車ボタンからオフセット秒数を指定できます。\n";
     guide += "・画面最下部のボタンまたはF1〜5キーで定型文を入力できます。\n";
+    guide += "　　・定型文編集は左上の「設定」から行えます[NEW]\n";
     guide += "・Shift + F1〜5キーで定型文入力と同時に記録できます（入力中テキストには影響しません）。\n";
-    guide += "・既存のチャプターラベルをクリックして編集できます。[NEW]\n";
+    guide += "・既存のチャプターラベルをクリックして編集できます。\n";
     alert(guide);
 });
+
+
 
 //キーボードショートカット
 document.body.addEventListener('keydown', (event)=>{
@@ -342,4 +357,101 @@ function editText(obj) {
     } else {
         obj.innerText = "チャプター";
     }
+}
+
+
+/**
+ * スニペット編集オーバーレイ関連
+ */
+//「設定」ボタンで定型文シート表示
+document.getElementById('open_snippet_setting').addEventListener('click', ()=>{
+    edit_snippet1.value = snippets[1];
+    edit_snippet2.value = snippets[2];
+    edit_snippet3.value = snippets[3];
+    edit_snippet4.value = snippets[4];
+    edit_snippet5.value = snippets[5];
+
+    //編集イベントをキャッチして更新処理を呼び出す
+    document.getElementById('edit_snippet1').addEventListener('input', updateSnippet);
+    document.getElementById('edit_snippet2').addEventListener('input', updateSnippet);
+    document.getElementById('edit_snippet3').addEventListener('input', updateSnippet);
+    document.getElementById('edit_snippet4').addEventListener('input', updateSnippet);
+    document.getElementById('edit_snippet5').addEventListener('input', updateSnippet);
+
+    //リセットボタンの処理
+    document.getElementById('reset_snippet1').addEventListener('click', resetSnippet);
+    document.getElementById('reset_snippet2').addEventListener('click', resetSnippet);
+    document.getElementById('reset_snippet3').addEventListener('click', resetSnippet);
+    document.getElementById('reset_snippet4').addEventListener('click', resetSnippet);
+    document.getElementById('reset_snippet5').addEventListener('click', resetSnippet);
+
+    document.getElementById('snippet_setting').style.display="block";
+});
+
+//「×」ボタンで定型文シートを非表示
+document.getElementById('close_snippet_setting').addEventListener('click', ()=>{
+    //イベントリスナーを削除
+    document.getElementById('edit_snippet1').removeEventListener('input', updateSnippet);
+    document.getElementById('edit_snippet2').removeEventListener('input', updateSnippet);
+    document.getElementById('edit_snippet3').removeEventListener('input', updateSnippet);
+    document.getElementById('edit_snippet4').removeEventListener('input', updateSnippet);
+    document.getElementById('edit_snippet5').removeEventListener('input', updateSnippet);
+
+    document.getElementById('reset_snippet1').removeEventListener('click', resetSnippet);
+    document.getElementById('reset_snippet2').removeEventListener('click', resetSnippet);
+    document.getElementById('reset_snippet3').removeEventListener('click', resetSnippet);
+    document.getElementById('reset_snippet4').removeEventListener('click', resetSnippet);
+    document.getElementById('reset_snippet5').removeEventListener('click', resetSnippet);
+
+    //非表示
+    document.getElementById('snippet_setting').style.display="none";
+
+});
+
+
+
+//定型文を更新
+function updateSnippet(InputEvent) {
+    let target = InputEvent.currentTarget.id.replace('edit_',''); //「snippet1〜5」
+    let num = target.replace('snippet','');
+    let snippet = document.getElementById(InputEvent.currentTarget.id).value;
+    console.log("target:"+target+" snippet:"+snippet);
+
+    localStorage.setItem(target, snippet); //localstrageに永続保存
+    snippets[num] = snippet;
+    document.getElementById(target).innerHTML = "<span class=\"fLabel\">F"+num+":</span>"+snippet.replace("$t","").replace("$c",""); //表示を更新
+}
+
+//定型文を初期化
+function resetSnippet(InputEvent) {
+    let target = InputEvent.currentTarget.id.replace('reset_','');//「snippet1〜5」
+    localStorage.removeItem(target); //localstrageを削除
+    switch (target) {
+        case "snippet1":
+            document.getElementById('edit_'+target).value = snippets_default[1];
+            snippets[1] = snippets_default[1];
+            document.getElementById(target).innerHTML = "<span class=\"fLabel\">F1:</span>"+snippets_default[1].replace("$t","").replace("$c",""); //表示を更新
+            break;
+        case "snippet2":
+            document.getElementById('edit_'+target).value = snippets_default[2];
+            snippets[2] = snippets_default[2];
+            document.getElementById(target).innerHTML = "<span class=\"fLabel\">F2:</span>"+snippets_default[2].replace("$t","").replace("$c",""); //表示を更新
+            break;
+        case "snippet3":
+            document.getElementById('edit_'+target).value = snippets_default[3];
+            snippets[3] = snippets_default[3];
+            document.getElementById(target).innerHTML = "<span class=\"fLabel\">F3:</span>"+snippets_default[3].replace("$t","").replace("$c",""); //表示を更新
+            break;
+        case "snippet4":
+            document.getElementById('edit_'+target).value = snippets_default[4];
+            snippets[4] = snippets_default[4];
+            document.getElementById(target).innerHTML = "<span class=\"fLabel\">F4:</span>"+snippets_default[4].replace("$t","").replace("$c",""); //表示を更新
+            break;
+        case "snippet5":
+            document.getElementById('edit_'+target).value = snippets_default[5];
+            snippets[5] = snippets_default[5];
+            document.getElementById(target).innerHTML = "<span class=\"fLabel\">F5:</span>"+snippets_default[5].replace("$t","").replace("$c",""); //表示を更新
+           break;
+    }
+
 }

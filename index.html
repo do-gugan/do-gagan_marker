@@ -17,8 +17,11 @@
 <body>
 <main id="main">
     <div id="save_button_block">
-        <button id="guide" class="button">使い方</button>
-        <div id="title">動画眼マーカー <span>Ver2.0</span></div>
+        <div id="guide_custom">
+            <button id="guide" class="button">使い方</button>
+            <button id="open_snippet_setting" class="button">設定</button>    
+        </div>
+        <div id="title">動画眼マーカー <span>Ver2.1</span></div>
         <div>
             <a href="#" id="copy"  class="iconButton"><i class="fa-solid fa-copy" title="クリップボードにコピー"></i></a>
             <a href="#" id="save"  class="iconButton" download="rename_same_as_movie.dggn.txt"><i class="fa-solid fa-file-arrow-down" title="ローカルに保存"></i></a>
@@ -68,6 +71,16 @@
     <button id="snippet5" class="button snippet" disabled onclick="insertSnippet(5);">F5:</button>
 </div>
 </main>
+<div id="snippet_setting">
+    <i class="fa-solid fa-xmark" title="閉じる" id="close_snippet_setting"></i>
+    <h1>定型文設定</h1>
+    <div>F1:<input type="text" id="edit_snippet1" /><i id="reset_snippet1" class="fa-solid fa-rotate-right" title="リセット"></i></div>
+    <div>F2:<input type="text" id="edit_snippet2" /><i id="reset_snippet2" class="fa-solid fa-rotate-right" title="リセット"></i></div>
+    <div>F3:<input type="text" id="edit_snippet3" /><i id="reset_snippet3" class="fa-solid fa-rotate-right" title="リセット"></i></div>
+    <div>F4:<input type="text" id="edit_snippet4" /><i id="reset_snippet4" class="fa-solid fa-rotate-right" title="リセット"></i></div>
+    <div>F5:<input type="text" id="edit_snippet5" /><i id="reset_snippet5" class="fa-solid fa-rotate-right" title="リセット"></i></div>
+    <p>$t = 入力中の文字<br>$c = カーソル位置</p>
+</div>
 </body>
 <script type="text/javascript" src="scripts.js"></script>
 </html>

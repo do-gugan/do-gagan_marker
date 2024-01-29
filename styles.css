@@ -67,7 +67,7 @@ main {
 }
 
 
-#manurl_settings {
+#manual_settings {
     
 }
 
@@ -138,10 +138,13 @@ main {
     padding-top: 0.25em;
 }
 
-#guide {
+#guide_custom {
+    margin: 0em 1.0em 0em 1.5em;
+}
+
+#guide,#open_snippet_setting {
     width: 5em;
     height: 2.5em;
-    margin: 0em 1.0em 0em 1.5em;
 }
 
 #title {
@@ -235,6 +238,43 @@ input {
 input:disabled {
     color:#666;
     background-color: #ccc !important;
+}
+
+/* 定型文設定シート */
+#snippet_setting {
+    background-color: #ccc;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: 20rem;
+    height: 25rem;    
+
+    padding: 2rem;
+    box-shadow: 5px 5px 10px #444;
+
+    text-align: center;
+
+    display: none;
+}
+#snippet_setting > h1 {
+    margin:0.2em;
+    font-size: 1.5em;
+}
+#snippet_setting > div {
+    margin: 1em 0em;
+    font-size:0.9em;
+}
+#snippet_setting > div > i{
+    margin-left: 0.5em;
+}
+#close_snippet_setting {
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+    font-size: 2em;
 }
 
 /* スマホ対応 */
