@@ -289,7 +289,11 @@ document.getElementById('share').addEventListener('click', async (event)=>{
     try {
         await navigator.share(shareData);
       } catch(e) {
-        alert('Error: ' + e);
+        if (e.code == 20) {
+            //alert('共有がキャンセルされました。');
+        } else {
+            alert('Error: ' + e.code);
+        }
     }
 
 }, false);
