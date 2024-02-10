@@ -136,10 +136,13 @@ main {
     display: flex;
     justify-content: space-between;
     padding-top: 0.25em;
+    flex-direction: row;
+
 }
 
 #guide_custom {
     margin: 0em 1.0em 0em 1.5em;
+    display: flex;
 }
 
 #guide,#open_snippet_setting {
@@ -156,6 +159,11 @@ main {
     font-size: 80%;
     font-weight: normal;
 }
+#output_buttons{
+    display: flex;
+    justify-content: flex-end;
+}
+
 #save {
     margin: 0em 1.0em 0em 1.0em;
 }
@@ -293,8 +301,14 @@ input:disabled {
         height: calc(100dvh - 3em);
         grid-template-rows: 3em auto 3.5em 0em 3.5em 0.5em;
     }
-    #guide {
-        font-size: 0.9em;
+    #guide_custom {
+        font-size: 3vw;
+        margin: 0.25em 0.5em 0.25em 0.5em;
+        height:2.3em;
+    }
+    #title {
+        font-size: 4vw;
+        margin-top:1vh;
     }
     #timecode {
         font-size: 1.2em;
