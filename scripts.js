@@ -1,6 +1,6 @@
 ﻿//各種デフォルト値
 const defaultMemo = "チャプター";
-let syncMethod = localStorage.getItem('sync_method'); //デフォルト同期方法
+let syncMethod = localStorage.getItem('sync_method') || "timeofday";; //デフォルト同期方法
 let updateTimeOfDayTimer; //時刻同期用タイマー
 let manualCountTimer; //手動カウンター用タイマー
 let manualCountStarted; //手動タイマーを開始した日時オブジェクト
@@ -14,6 +14,7 @@ let snippets = [];
 document.getElementById('sync_method').value = localStorage.getItem('sync_method') || "timeofday";
 document.getElementById('offset_timeofday').value = localStorage.getItem('offset_timeofday') || "0";
 document.getElementById('offset_manual').value = localStorage.getItem('offset_manual') || "0";
+localStorage.setItem('sync_method', syncMethod); //初期値を保存
 setSyncMethod();
 
 //localstrageからカスタム定型文を読み込む
@@ -216,7 +217,10 @@ document.getElementById('mark').addEventListener('click', ()=>{
     }
     document.getElementById('newMemo').value = "";
     marker.innerHTML = '<span class="tc">' + tc + '</span><span class="memo" onClick="editText(this);">' + memo + '</span>\n';
-    document.getElementById('list').appendChild(marker);    
+    document.getElementById('list').appendChild(marker);
+
+    //フォーカスをメモ欄に戻す
+    //document.getElementById('newMemo').focus();
 }, false);
 
 // 保存用テキスト生成（ファイル保存、コピー両用）
