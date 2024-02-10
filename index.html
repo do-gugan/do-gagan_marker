@@ -21,7 +21,7 @@
             <button type="button" id="guide" class="button">使い方</button>
             <button type="button" id="open_snippet_setting" class="button">設定</button>
         </div>
-        <div id="title">動画眼マーカー <span>Ver2.1</span></div>
+        <div id="title">動画眼マーカー <span>Ver3.0</span></div>
         <div id="output_buttons">
             <a href="#" id="copy"  class="iconButton"><i class="fa-solid fa-copy" title="クリップボードにコピー"></i></a>
             <a href="#" id="save"  class="iconButton" download="rename_same_as_movie.dggn.txt"><i class="fa-solid fa-file-arrow-down" title="ローカルに保存"></i></a>
@@ -33,31 +33,8 @@
     </div>
     <div id="timecode_block">
     <div>
-        同期方法:<select id="syncMethod">
-            <option value="timeofday">現在時刻</option>
-            <option value="manual">手動</option>
-            <!--option value="obs">OBS Studio</option-->
-            <!--option value="atem">ATEM Switcher</option-->
-        </select> 
-        <button class="iconButton" id="show_timecode_settings"><i class="fa-solid fa-gear" title="タイムコード同期設定"></i></button>    
-    </div>
-    <div>
         <span id="timecode">00:00:00</span>
         <button class="button" id="start">スタート</button>
-        <span id="timeOfDayOffsetBlock" title="動画にタイムコードが出ている場合、それに合わせておくと、後ほどより正確に同期できます。">
-            <span class="timeOfDayOffsetLabel">時差補正</span>
-            <input type="number" id="timeOfDayOffset" value="0" /><span class="timeOfDayOffsetLabel">秒</span>
-        </span>
-    </div>
-    <div></div>
-</div>
-<div id="timecode_settings_block">
-    <div id="manual_settings" class="setting_block" style="display:block; background-color:#abc;">
-        開始オフセット:<input type="number" id="manual_timecode_offset" value="0" size="2" min="0" />秒
-    </div>
-    <div id="obs_settings" class="setting_block" style="display:none; background-color:#cba;">
-    </div>
-    <div id="atem_settings" class="setting_block" style="display:none; background-color:#bca;">
     </div>
 </div>
 <div id="input_controls_block">
@@ -73,6 +50,20 @@
 </main>
 <div id="snippet_setting">
     <i class="fa-solid fa-xmark" title="閉じる" id="close_snippet_setting"></i>
+    <h1>同期</h1>
+    <div style="display: inline-block;">
+    <select id="sync_method">
+        <option value="timeofday">現在時刻</option>
+        <option value="manual">手動スタート</option>
+    </select>
+    時差: 
+    <span id="span_offset_timeofday">
+        <input type="number" id="offset_timeofday" value="0" min="-24" max="24"/>時間
+    </span>
+    <span id="span_offset_manual" style="display: none;">
+        <input type="number" id="offset_manual" value="0" min="-99" max="99"/>秒
+    </span>
+    </div>
     <h1>出力話者コード</h1>
     <select id="speaker_code">
         <option value="0">0</option>

@@ -1,11 +1,20 @@
 ﻿//各種デフォルト値
 const defaultMemo = "チャプター";
-let syncMethod = "timeofday"; //デフォルト同期方法
+let syncMethod = localStorage.getItem('sync_method'); //デフォルト同期方法
+let updateTimeOfDayTimer; //時刻同期用タイマー
+let manualCountTimer; //手動カウンター用タイマー
+let manualCountStarted; //手動タイマーを開始した日時オブジェクト
 
 // $tの位置に記入済みのテキストが挿入される
 const snippets_default = ["","タスク開始:$t$c","参加者「$t$c」","進行役「$t$c」","見所！:$t$c","タスク完了:$t$c"];
 //let snippets = ["","タスク開始:$t$c","参加者「$t$c」","進行役「$t$c」","見所！:$t$c","タスク完了:$t$c"];
 let snippets = [];
+
+//同期設定の読み込み
+document.getElementById('sync_method').value = localStorage.getItem('sync_method') || "timeofday";
+document.getElementById('offset_timeofday').value = localStorage.getItem('offset_timeofday') || "0";
+document.getElementById('offset_manual').value = localStorage.getItem('offset_manual') || "0";
+setSyncMethod();
 
 //localstrageからカスタム定型文を読み込む
 snippets[1] = localStorage.getItem('snippet1') || snippets_default[1];
@@ -13,6 +22,7 @@ snippets[2] = localStorage.getItem('snippet2') || snippets_default[2];
 snippets[3] = localStorage.getItem('snippet3') || snippets_default[3];
 snippets[4] = localStorage.getItem('snippet4') || snippets_default[4];
 snippets[5] = localStorage.getItem('snippet5') || snippets_default[5];
+
 
 //話者コードの読み込み
 document.getElementById('speaker_code').value = localStorage.getItem('speaker_code') || "7";
@@ -25,32 +35,26 @@ document.getElementById('snippet5').innerHTML = "<span class=\"fLabel\">F5:</spa
 
 //ページを開いた時に実行
 window.onload = function() {
-    //URLパラメーター取得
-    //console.log("onload");
-    const params = (new URL(document.location)).searchParams;
-    //console.log(params.get('sync'));
-    switch (params.get('sync')) {
-        case 'timeofday':
-            syncMethod = "timeofday";
-            document.getElementById('syncMethod').value = 'timeofday';
-            break;
-        case 'manual':
-            syncMethod = "manual";            
-            document.getElementById('syncMethod').value = 'manual';
-    }
+
+}
+
+//同期方法の切り替え
+function setSyncMethod() {
     if (syncMethod == 'timeofday') {
         //同期方法が時刻の場合
         document.getElementById('start').style.display = 'none';
         toggleControls(false);
         document.getElementById('timecode').style.color = "#33d";
-        setInterval(updateTimeOfDayCounter, 1000);
-    } else {
+        clearInterval(manualCountTimer);        
+        updateTimeOfDayTimer = setInterval(updateTimeOfDayCounter, 1000);
+    } else if (syncMethod == 'manual') {
         //同期方法が手動の場合
-        document.getElementById('timeOfDayOffsetBlock').style.display = 'none';
+        document.getElementById('timecode').innerText = secToHHMMSS(0);
+        document.getElementById('start').style.display = 'inline-block';
+        document.getElementById('timecode').style.color = "#000";       
+        clearInterval(updateTimeOfDayTimer);
     }
-
 }
-
 
 //ブラウザウインドウを閉じる時に警告を表示する
 //キャンセルした場合はなにもしない
@@ -144,8 +148,6 @@ function insertSnippet(num, isShiftKeyDown) {
 }
 
 //手動カウンタースタートボタン
-let manualCountTimer; //手動カウンター用タイマー
-let manualCountStarted; //手動タイマーを開始した日時オブジェクト
 document.getElementById('start').addEventListener('click', ()=>{
     const btn = document.getElementById('start');
     if (btn.innerText == "スタート"){
@@ -169,7 +171,7 @@ document.getElementById('start').addEventListener('click', ()=>{
 function updateManualCounter() {
     const now = new Date();
     const elapsed = (now.getTime() - manualCountStarted.getTime()); //ミリ秒
-    document.getElementById('timecode').innerText = secToHHMMSS(elapsed + document.getElementById('manual_timecode_offset').value * 1000);   
+    document.getElementById('timecode').innerText = secToHHMMSS(elapsed + document.getElementById('offset_manual').value * 1000);   
 }
 
 //1秒毎に呼び出され時刻カウンターを更新（現在時刻時刻版）
@@ -178,10 +180,7 @@ function updateTimeOfDayCounter() {
 
     //指定秒数の補正
     const seconds = now.getSeconds();
-    if (Number.isInteger(document.getElementById("timeOfDayOffset").value) || document.getElementById("timeOfDayOffset").value == ""){
-        document.getElementById("timeOfDayOffset").value = 0;
-    }
-    now.setSeconds(seconds + parseInt(document.getElementById("timeOfDayOffset").value));
+    now.setSeconds(seconds + (document.getElementById("offset_timeofday").value * 3600));
 
     const hh = ('00' + now.getHours()).slice(-2);
     const mm = ('00' + now.getMinutes()).slice(-2);
@@ -198,41 +197,7 @@ function toggleControls(b) {
     document.getElementById('snippet3').disabled = b;
     document.getElementById('snippet4').disabled = b;
     document.getElementById('snippet5').disabled = b;
-
-    document.getElementById('show_timecode_settings').disabled = !b;
 }
-
-//カウンター設定ボタン（設定エリアを表示／非表示）
-document.getElementById('show_timecode_settings').addEventListener('click', ()=>{
-    const block = document.getElementById('timecode_settings_block');
-    const main = document.getElementById('main');
-    const mediaQuery = window.matchMedia('(max-width: 600px)');
-    if (block.style.display != "block") {
-        if (mediaQuery.matches) {
-            //SP （スニペットブロックの高さで調整）
-            main.style.gridTemplateRows = "3em auto 3.5em 5.5em 3.5em 0.5em";
-        } else {
-            //PC
-            main.style.gridTemplateRows = "3em auto 3.5em 5.5em 3.5em 1em";
-        }
-        block.style.display = "block";
-    } else {
-        if (mediaQuery.matches) {
-            //SP （スニペットブロックの高さで調整）
-            main.style.gridTemplateRows = "3em auto 3.5em 0em 3.5em 0.5em";
-        } else {
-            //PC
-            main.style.gridTemplateRows = "3em auto 3.5em 0em 3.5em 1em";
-        }
-        block.style.display = "none";
-    }
-});
-
-//同期方法の切り替え
-document.getElementById('syncMethod').addEventListener('change', ()=>{
-    //GETパラメーターを変更してリロード
-    window.location.href = "?sync="+document.getElementById('syncMethod').value;
-});
 
 // 記録実行ボタン
 document.getElementById('mark').addEventListener('click', ()=>{
@@ -456,6 +421,33 @@ function resetSnippet(InputEvent) {
     }
 
 }
+
+/*
+ * 同期方法設定の保存
+*/
+document.getElementById('sync_method').addEventListener('change', ()=>{
+    localStorage.setItem('sync_method', document.getElementById('sync_method').value);
+    switch (document.getElementById('sync_method').value) {
+        case 'timeofday':
+            syncMethod = "timeofday";
+            document.getElementById('span_offset_timeofday').style.display = 'inline-block';
+            document.getElementById('span_offset_manual').style.display = 'none';
+            break;
+        case 'manual':
+            syncMethod = "manual";
+            document.getElementById('span_offset_timeofday').style.display = 'none';
+            document.getElementById('span_offset_manual').style.display = 'inline-block';
+            break;
+    }
+    setSyncMethod();
+});
+
+document.getElementById('offset_timeofday').addEventListener('change', ()=>{
+    localStorage.setItem('offset_timeofday', document.getElementById('offset_timeofday').value);
+});
+document.getElementById('offset_manual').addEventListener('change', ()=>{
+    localStorage.setItem('offset_manual', document.getElementById('offset_manual').value);
+});
 
 
 /*
