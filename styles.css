@@ -306,8 +306,8 @@ input:disabled {
         min-width: 375px;
     }
     main {
-        height: calc(100dvh - 3em);
-        grid-template-rows: 3em auto 3.5em 0em 3.5em 0.5em;
+        height: calc(100dvh - 0em);
+        grid-template-rows: 3em auto 3.5em 0em 10em 3em;
     }
     #guide_custom {
         font-size: 3vw;
@@ -340,6 +340,18 @@ input:disabled {
     }
     #share {
         display: inline-block;
+    }
+    #mark{
+        flex-basis: 50%;
+        font-size: 4em;
+        margin-right:0;
+    }
+    #newMemo {
+        font-size:1.4em;
+    }
+    .iconButton:hover {
+        /* タップ後に色が変わらないように */
+        color: #444;
     }
 
 }
