@@ -250,7 +250,7 @@ input:disabled {
     left: 0;
     margin: auto;
     width: 20rem;
-    height: 25rem;    
+    height: 28rem;    
 
     padding: 2rem;
     box-shadow: 5px 5px 10px #444;
@@ -270,6 +270,12 @@ input:disabled {
 #snippet_setting > div > i{
     margin-left: 0.5em;
 }
+
+#snippet_setting > select {
+    background-color: white;
+    appearance: auto;
+}
+
 #close_snippet_setting {
     position: absolute;
     top: 0.5em;

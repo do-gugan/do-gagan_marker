@@ -14,6 +14,9 @@ snippets[3] = localStorage.getItem('snippet3') || snippets_default[3];
 snippets[4] = localStorage.getItem('snippet4') || snippets_default[4];
 snippets[5] = localStorage.getItem('snippet5') || snippets_default[5];
 
+//話者コードの読み込み
+document.getElementById('speaker_code').value = localStorage.getItem('speaker_code') || "0";
+
 document.getElementById('snippet1').innerHTML = "<span class=\"fLabel\">F1:</span>"+snippets[1].replace("$t","").replace("$c","");
 document.getElementById('snippet2').innerHTML = "<span class=\"fLabel\">F2:</span>"+snippets[2].replace("$t","").replace("$c","");
 document.getElementById('snippet3').innerHTML = "<span class=\"fLabel\">F3:</span>"+snippets[3].replace("$t","").replace("$c","");
@@ -268,7 +271,7 @@ function prepareRecordToSave() {
         }
         line += "\t";
         line += r.querySelector(".memo").innerText; //メモ
-        line += "\t0\n"; //話者コード
+        line += "\t" + localStorage.getItem("speaker_code") + "\n"; //話者コード
         text += line;
     });
     return text;
@@ -408,8 +411,6 @@ document.getElementById('close_snippet_setting').addEventListener('click', ()=>{
 
 });
 
-
-
 //定型文を更新
 function updateSnippet(InputEvent) {
     let target = InputEvent.currentTarget.id.replace('edit_',''); //「snippet1〜5」
@@ -455,3 +456,13 @@ function resetSnippet(InputEvent) {
     }
 
 }
+
+
+/*
+ * 話者コード設定の保存
+*/
+document.getElementById('speaker_code').addEventListener('change', ()=>{    
+    console.log("speaker code:"+document.getElementById('speaker_code').value);
+    localStorage.setItem('speaker_code', document.getElementById('speaker_code').value);
+});
+
