@@ -15,7 +15,7 @@ snippets[4] = localStorage.getItem('snippet4') || snippets_default[4];
 snippets[5] = localStorage.getItem('snippet5') || snippets_default[5];
 
 //話者コードの読み込み
-document.getElementById('speaker_code').value = localStorage.getItem('speaker_code') || "0";
+document.getElementById('speaker_code').value = localStorage.getItem('speaker_code') || "7";
 
 document.getElementById('snippet1').innerHTML = "<span class=\"fLabel\">F1:</span>"+snippets[1].replace("$t","").replace("$c","");
 document.getElementById('snippet2').innerHTML = "<span class=\"fLabel\">F2:</span>"+snippets[2].replace("$t","").replace("$c","");
